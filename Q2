@@ -1,0 +1,54 @@
+import matplotlib.pyplot as plt
+import random
+
+# Linear Search Function
+def linear_search(arr, target):
+    comparisons = 0
+    for index, element in enumerate(arr):
+        comparisons += 1
+        if element == target:
+            return index, comparisons
+    return -1, comparisons
+
+# Experiment Setup
+input_sizes = [10, 50, 100, 500, 1000, 5000, 10000]
+min_comparisons_list = []
+max_comparisons_list = []
+avg_comparisons_list = []
+
+for size in input_sizes:
+    arr = list(range(size))  # Create a sorted list of size `size`
+    comparisons = []
+
+    # Test with `size` successful keys
+    for _ in range(size):
+        target = random.choice(arr)  # Randomly select a key that exists
+        _, num_comparisons = linear_search(arr, target)
+        comparisons.append(num_comparisons)
+
+    # Test with 1 unsuccessful key
+    target = size + 1  # A key that does not exist in the list
+    _, num_comparisons = linear_search(arr, target)
+    comparisons.append(num_comparisons)
+
+    # Compute statistics
+    min_comparisons_list.append(min(comparisons))
+    max_comparisons_list.append(max(comparisons))
+    avg_comparisons_list.append(sum(comparisons) / len(comparisons))
+
+# Plotting the Results
+plt.figure(figsize=(12, 8))
+
+# Minimum Comparisons
+plt.plot(input_sizes, min_comparisons_list, marker='o', label='Minimum Comparisons')
+# Maximum Comparisons
+plt.plot(input_sizes, max_comparisons_list, marker='o', label='Maximum Comparisons')
+# Average Comparisons
+plt.plot(input_sizes, avg_comparisons_list, marker='o', label='Average Comparisons')
+
+plt.title('Linear Search: Key Comparisons (Min, Max, Avg) vs Input Size')
+plt.xlabel('Input Size')
+plt.ylabel('Number of Comparisons')
+plt.grid(True)
+plt.legend()
+plt.show()
