@@ -1,0 +1,59 @@
+import matplotlib.pyplot as plt
+import random
+
+# Linear Search Function
+def linear_search(arr, target):
+    comparisons = 0
+    for index, element in enumerate(arr):
+        comparisons += 1
+        if element == target:
+            return index, comparisons
+    return -1, comparisons
+
+# Experiment Setup
+input_sizes = list(range(0, 101, 5))  # n varies from 0 to 100 with a step of 5
+min_comparisons_list = []
+max_comparisons_list = []
+avg_comparisons_list = []
+
+for size in input_sizes:
+    arr = list(range(size))  # Create a sorted list of size `size`
+    comparisons = []
+
+    # Test with `size` successful keys
+    for _ in range(size):
+        target = random.choice(arr) if arr else None  # Random key if list is not empty
+        _, num_comparisons = linear_search(arr, target) if arr else (None, 0)
+        comparisons.append(num_comparisons)
+
+    # Test with 1 unsuccessful key
+    target = size + 1  # A key that does not exist in the list
+    _, num_comparisons = linear_search(arr, target) if arr else (None, 0)
+    comparisons.append(num_comparisons)
+
+    # Compute statistics
+    if comparisons:
+        min_comparisons_list.append(min(comparisons))
+        max_comparisons_list.append(max(comparisons))
+        avg_comparisons_list.append(sum(comparisons) / len(comparisons))
+    else:
+        min_comparisons_list.append(0)
+        max_comparisons_list.append(0)
+        avg_comparisons_list.append(0)
+
+# Plotting the Results
+plt.figure(figsize=(12, 8))
+
+# Minimum Comparisons
+plt.plot(input_sizes, min_comparisons_list, marker='o', label='Minimum Comparisons')
+# Maximum Comparisons
+plt.plot(input_sizes, max_comparisons_list, marker='o', label='Maximum Comparisons')
+# Average Comparisons
+plt.plot(input_sizes, avg_comparisons_list, marker='o', label='Average Comparisons')
+
+plt.title('Linear Search: Key Comparisons (Min, Max, Avg) vs Input Size (n)')
+plt.xlabel('Input Size (n)')
+plt.ylabel('Number of Comparisons')
+plt.grid(True)
+plt.legend()
+plt.show()
