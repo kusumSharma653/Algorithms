@@ -1,1 +1,46 @@
+#1.
+import matplotlib.pyplot as plt
+import random
+
+# Linear Search Function
+def linear_search(arr, target):
+    comparisons = 0
+    for index, element in enumerate(arr):
+        comparisons += 1
+        if element == target:
+            return index, comparisons
+    return -1, comparisons
+
+# Experiment Setup
+input_sizes = [10, 50, 100, 500, 1000, 5000, 10000]
+avg_comparisons_list = []
+
+for size in input_sizes:
+    arr = list(range(size))  # Create a sorted list of size `size`
+    total_comparisons = 0
+    
+    # Test with `size` successful keys
+    for _ in range(size):
+        target = random.choice(arr)  # Randomly select a key that exists
+        _, comparisons = linear_search(arr, target)
+        total_comparisons += comparisons
+
+    # Test with 1 unsuccessful key
+    target = size + 1  # A key that does not exist in the list
+    _, comparisons = linear_search(arr, target)
+    total_comparisons += comparisons
+
+    # Calculate average comparisons
+    avg_comparisons = total_comparisons / (size + 1)
+    avg_comparisons_list.append(avg_comparisons)
+
+# Plotting the Results
+plt.figure(figsize=(10, 6))
+plt.plot(input_sizes, avg_comparisons_list, marker='o', label='Average Comparisons')
+plt.title('Linear Search: Average Comparisons vs Input Size')
+plt.xlabel('Input Size')
+plt.ylabel('Average Number of Comparisons')
+plt.grid(True)
+plt.legend()
+plt.show()
 
